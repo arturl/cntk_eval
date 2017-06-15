@@ -61,13 +61,15 @@ bool does_file_exist(std::string  file_name)
 
 int main()
 {
-	std::string model_file = "..\\..\\resources\\models\\ResNet.model";
+	std::string model_file = "..\\..\\resources\\models\\ResNet18_ImageNet_CNTK.model";
 
 	if (!does_file_exist(model_file))
 	{
 		fprintf(stderr, "Error: The model '%s' does not exist.\n", model_file.c_str());
 		return 1;
 	}
+
+	printf("Using model %s\n", model_file.c_str());
 
 	IEvaluateModel<float> *model = prepare_model(model_file);
 
