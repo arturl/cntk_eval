@@ -24,14 +24,15 @@ std::vector<float> get_features(uint8_t* image_data_array, uint32_t reqWidth, ui
 	uint32_t size = reqWidth * reqHeight * 3;
 
 	// BGR conversion to BBB..GGG..RRR
-	std::vector<float> featuresLocal;
+	std::vector<float> featuresLocal(size);
+	float *pfeatures = featuresLocal.data();
 
 	// convert BGR array to BBB...GGG...RRR array
 	for (uint32_t c = 0; c < 3; c++) {
 		for (uint32_t p = c; p < size; p = p + 3)
 		{
 			float v = image_data_array[p];
-			featuresLocal.push_back(v);
+			*pfeatures++ = v;
 		}
 	}
 	return featuresLocal;
@@ -125,21 +126,27 @@ uint32_t ImageRecognizer::GetRequiredHeight()
 	return feature_image_height;
 }
 
-Platform::String^ ImageRecognizer::RecognizeObject(const Platform::Array<byte>^ bytes)
+Windows::Foundation::IAsyncOperation<Platform::String^>^ ImageRecognizer::RecognizeObjectAsync(const Platform::Array<byte>^ bytes)
 {
-	// The data we've got is in RGBA format. We should convert it to RGB
-	std::vector<uint8_t> rgb((bytes->Length / 4) * 3);
-	uint8_t* rgba = bytes->Data;
+	return concurrency::create_async([=] {
+		// The data we've got is in RGBA format. We should convert it to BGR
+		std::vector<uint8_t> rgb((bytes->Length / 4) * 3);
+		uint8_t* rgba = bytes->Data;
 
-	uint32_t i = 0;
-	for (uint32_t j = 0; j < bytes->Length;)
-	{
-		rgb[i++] = rgba[j++]; 	// R
-		rgb[i++] = rgba[j++]; 	// G
-		rgb[i++] = rgba[j++]; 	// B
-		j++;					// A (skipped)
-	}
+		uint32_t i = 0;
+		for (uint32_t j = 0; j < bytes->Length;)
+		{
+			uint32_t r = j++;  // R
+			uint32_t g = j++;  // G
+			uint32_t b = j++;  // B
+			uint32_t a = j++;  // A (skipped)
 
-	auto image_class = classify_image(m_model, rgb.data(), rgb.size());
-	return StringFromCharPtr(image_class);
+			rgb[i++] = rgba[r];
+			rgb[i++] = rgba[g];
+			rgb[i++] = rgba[b];
+		}
+
+		auto image_class = classify_image(m_model, rgb.data(), rgb.size());
+		return StringFromCharPtr(image_class);
+	});
 }

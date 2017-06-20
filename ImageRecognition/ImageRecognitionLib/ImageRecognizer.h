@@ -9,7 +9,8 @@ namespace ImageRecognitionLib
 		Microsoft::MSR::CNTK::IEvaluateModel<float> * m_model;
 	public:
 		ImageRecognizer(Platform::String^ modelFile);
-		Platform::String^ RecognizeObject(const Platform::Array<byte>^ bytes);
+
+		Windows::Foundation::IAsyncOperation<Platform::String^>^ RecognizeObjectAsync(const Platform::Array<byte>^ bytes);
 
 		uint32_t GetRequiredWidth();
 		uint32_t GetRequiredHeight();
