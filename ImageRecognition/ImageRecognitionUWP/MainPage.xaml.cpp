@@ -19,6 +19,7 @@ using namespace ImageRecognitionUWP;
 
 using namespace Platform;
 //using namespace Windows::Foundation;
+using namespace Windows::Storage;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
@@ -27,6 +28,8 @@ using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
+using namespace Windows::UI::Xaml::Media::Imaging;
+using namespace Windows::Graphics::Imaging;
 
 using namespace cv;
 using namespace Microsoft::MSR::CNTK;
@@ -37,6 +40,14 @@ const int feature_image_height = 224;
 
 typedef std::pair<std::wstring, std::vector<float>*> MapEntry;
 typedef std::map<std::wstring, std::vector<float>*> Layer;
+
+Platform::String^ StringFromCharPtr(const char* str)
+{
+	std::string s_str = std::string(str);
+	std::wstring wid_str = std::wstring(s_str.begin(), s_str.end());
+	const wchar_t* w_char = wid_str.c_str();
+	return ref new Platform::String(w_char);
+}
 
 std::vector<float> get_features(uint8_t* image_data_array, uint32_t reqWidth, uint32_t reqHeight)
 {
@@ -84,15 +95,13 @@ bool does_file_exist(std::string  file_name)
 template<typename Func>
 int main2(Func log)
 {
-	// TODO: change these hard-coded paths
-	//std::string model_file = "D:\\g\\cntk_eval\\resources\\models\\ResNet18_ImageNet_CNTK.model";
 	std::string model_file = "Assets\\ResNet18_ImageNet_CNTK.model";
 
 	char szBuff[1024];
 
 	if (!does_file_exist(model_file))
 	{
-		sprintf_s(szBuff, "Error: The model '%s' does not exist.\n", model_file.c_str());
+		sprintf_s(szBuff, "Error: The model '%s' does not exist.", model_file.c_str());
 		log(szBuff);
 		return 1;
 	}
@@ -116,7 +125,7 @@ int main2(Func log)
 		std::string image_file_path = base_path + "\\" + image_file;
 		if (!does_file_exist(image_file_path))
 		{
-			sprintf_s(szBuff, "Error: The image file '%s' does not exist.\n", model_file.c_str());
+			sprintf_s(szBuff, "Error: The image file '%s' does not exist.", model_file.c_str());
 			log(szBuff);
 			return 1;
 		}
@@ -164,7 +173,7 @@ int main2(Func log)
 
 		std::string image_class_str = map_image_class_number_to_image_class_string(image_class);
 
-		sprintf_s(szBuff, "%s -> %s. time elapsed: %lld ms.\n", image_file.c_str(), image_class_str.c_str(), duration);
+		sprintf_s(szBuff, "%s -> %s. time elapsed: %lld ms.", image_file.c_str(), image_class_str.c_str(), duration);
 		log(szBuff);
 	}
 	return 0;
@@ -175,11 +184,7 @@ MainPage::MainPage()
 	InitializeComponent();
 
 	auto log = [this] (const char* str){
-		std::string s_str = std::string(str);
-		std::wstring wid_str = std::wstring(s_str.begin(), s_str.end());
-		const wchar_t* w_char = wid_str.c_str();
-		Platform::String^ p_string = ref new Platform::String(w_char);
-
+		Platform::String^ p_string = StringFromCharPtr(str);
 		auto handler = ref new Windows::UI::Core::DispatchedHandler([this, p_string]() {
 			this->text->Text = this->text->Text + L"\n" + p_string;
 		});
