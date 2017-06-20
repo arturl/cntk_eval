@@ -19,11 +19,10 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>ImageRecognitionCS_TemporaryKey.pfx</PackageCertificateKeyFile>
     <CNTKRoot>D:\g\CNTK-arturl</CNTKRoot>
-    <OpenBLASRoot>$(OpenBLASRoot)</OpenBLASRoot>
-    <UseOpenBLAS>true</UseOpenBLAS>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <OpenBLASRoot>D:\g\OpenBLAS-UWP</OpenBLASRoot>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -55,7 +54,7 @@
     <Content Include="Assets\ResNet18_ImageNet_CNTK.model">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="project.json" />
+    <Content Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -70,7 +69,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="ImageRecognitionCS_TemporaryKey.pfx" />
+    <Content Include="ImageRecognitionCS_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\broccoli.jpg" />
@@ -86,44 +85,23 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
+
+  <Import Project="$(SolutionDir)\settings.props" />
   <ItemGroup>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\CNTKv2LibraryDll\Cntk.Core_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\Cntk.Math_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\libiomp5md.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\mkl_cntk_p.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(OpenBLASRoot)\lib\x64\DEBUG\libopenblas.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'=='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\EvalDll\Cntk.Eval_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\CNTKv2LibraryDll\Cntk.Core_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\Cntk.Math_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(OpenBLASRoot)\lib\x64\RELEASE\libopenblas.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'=='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\libiomp5md.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\mkl_cntk_p.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\EvalDll\Cntk.Eval_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\CNTKv2LibraryDll\Cntk.Core_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\Math\Cntk.Math_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\EvalDll\Cntk.Eval_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(OpenBLASRoot)\lib\x64\$(Configuration)\libopenblas.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
   </ItemGroup>
+
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

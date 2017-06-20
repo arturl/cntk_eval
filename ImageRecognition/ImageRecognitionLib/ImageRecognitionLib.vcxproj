@@ -21,9 +21,6 @@
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <CNTKRoot>D:\g\CNTK-arturl</CNTKRoot>
-    <UseOpenBLAS>true</UseOpenBLAS>
-    <OpenBLASRoot>D:\g\OpenBLAS-UWP</OpenBLASRoot>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -101,44 +98,23 @@
     </ClCompile>
     <ClCompile Include="ImageRecognizer.cpp" />
   </ItemGroup>
+
+  <Import Project="$(SolutionDir)\settings.props" />
   <ItemGroup>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\CNTKv2LibraryDll\Cntk.Core_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\Cntk.Math_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\libiomp5md.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\Math\mkl_cntk_p.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(OpenBLASRoot)\lib\x64\DEBUG\libopenblas.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'=='true' And '$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Debug_UWP\EvalDll\Cntk.Eval_app-2.0d.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\CNTKv2LibraryDll\Cntk.Core_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\Cntk.Math_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(OpenBLASRoot)\lib\x64\RELEASE\libopenblas.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'=='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\libiomp5md.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\Math\mkl_cntk_p.dll">
-      <DeploymentContent Condition="'$(UseOpenBLAS)'!='true' And '$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <None Include="$(CNTKRoot)\x64\Release_UWP\EvalDll\Cntk.Eval_app-2.0.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\CNTKv2LibraryDll\Cntk.Core_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\Math\Cntk.Math_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\EvalDll\Cntk.Eval_app-2.0$(CNTKBinSuffix).dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
+    <Content Include="$(OpenBLASRoot)\lib\x64\$(Configuration)\libopenblas.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </Content>
   </ItemGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
