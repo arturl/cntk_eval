@@ -82,19 +82,14 @@ namespace ImageRecognitionCS
                 sw = Stopwatch.StartNew();
 
                 string objectName = "?";
-                var task = Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        objectName = recognizer.RecognizeObject(data);
-                    }
-                    catch
-                    {
-                        objectName = "error";
-                    }
-                });
-
-                await task;
+                    objectName = await recognizer.RecognizeObjectAsync(data);
+                }
+                catch
+                {
+                    objectName = "error";
+                }
 
                 sw.Stop();
 
