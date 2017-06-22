@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>Cntk.Eval_app-2.0d.lib;Cntk.Core_app-2.0d.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Cntk.Eval_app-2.0d.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CNTKRoot)\x64\Debug_UWP\EvalDll;$(CNTKRoot)\x64\Debug_UWP\Math;$(CNTKRoot)\x64\Debug_UWP\Common;$(CNTKRoot)\x64\Debug_UWP\CNTKv2LibraryDll</AdditionalLibraryDirectories>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
@@ -83,7 +83,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>Cntk.Eval_app-2.0.lib;Cntk.Core_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Cntk.Eval_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CNTKRoot)\x64\Release_UWP\EvalDll;$(CNTKRoot)\x64\Release_UWP\Math;$(CNTKRoot)\x64\Release_UWP\Common;$(CNTKRoot)\x64\Release_UWP\CNTKv2LibraryDll</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -98,7 +98,6 @@
     </ClCompile>
     <ClCompile Include="ImageRecognizer.cpp" />
   </ItemGroup>
-
   <Import Project="$(SolutionDir)\settings.props" />
   <ItemGroup>
     <Content Include="$(CNTKRoot)\x64\$(CNTKBinFolder)\CNTKv2LibraryDll\Cntk.Core_app-2.0$(CNTKBinSuffix).dll">
@@ -114,7 +113,6 @@
       <DeploymentContent>true</DeploymentContent>
     </Content>
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
