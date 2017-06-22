@@ -19,6 +19,7 @@ using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using ImageRecognitionLib;
 using System.Diagnostics;
+using Windows.Storage.Pickers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,9 +30,12 @@ namespace ImageRecognitionCS
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        ImageRecognizer recognizer;
+
         public MainPage()
         {
             this.InitializeComponent();
+            this.pickButton.IsEnabled = false;
             var t = Run();
         }
 
@@ -40,12 +44,15 @@ namespace ImageRecognitionCS
             var sw = Stopwatch.StartNew();
             this.text.Text = "Loading model... ";
 
-            var recognizer = new ImageRecognizer("Assets\\ResNet18_ImageNet_CNTK.model");
+            this.recognizer = await ImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model");
 
             sw.Stop();
 
             this.text.Text += String.Format("Elapsed time: {0} ms", sw.ElapsedMilliseconds);
 
+            this.pickButton.IsEnabled = true;
+
+#if false // not using image picker
             var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
 
             var files = new String[]
@@ -61,42 +68,59 @@ namespace ImageRecognitionCS
             foreach (var fileName in files)
             {
                 var file = await folder.GetFileAsync(fileName);
-                var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                await RecognizeFile(recognizer, file);
+            }
+#endif
+        }
 
-                var decoder = await BitmapDecoder.CreateAsync(fileStream);
+        private async Task RecognizeFile(ImageRecognizer recognizer, StorageFile file)
+        {
+            var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
 
-                BitmapTransform transform = new BitmapTransform()
-                {
-                    ScaledHeight = recognizer.GetRequiredHeight(),
-                    ScaledWidth = recognizer.GetRequiredWidth()
-                };
+            var decoder = await BitmapDecoder.CreateAsync(fileStream);
 
-                PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
-                    BitmapPixelFormat.Rgba8,
-                    BitmapAlphaMode.Straight,
-                    transform,
-                    ExifOrientationMode.RespectExifOrientation,
-                    ColorManagementMode.DoNotColorManage);
+            BitmapTransform transform = new BitmapTransform()
+            {
+                ScaledHeight = recognizer.GetRequiredHeight(),
+                ScaledWidth = recognizer.GetRequiredWidth()
+            };
 
-                var data = pixelData.DetachPixelData();
-                sw = Stopwatch.StartNew();
+            PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
+                BitmapPixelFormat.Rgba8,
+                BitmapAlphaMode.Straight,
+                transform,
+                ExifOrientationMode.RespectExifOrientation,
+                ColorManagementMode.DoNotColorManage);
 
-                string objectName = "?";
-                try
-                {
-                    objectName = await recognizer.RecognizeObjectAsync(data);
-                }
-                catch
-                {
-                    objectName = "error";
-                }
+            var data = pixelData.DetachPixelData();
+            var sw = Stopwatch.StartNew();
 
-                sw.Stop();
-
-                this.text.Text += String.Format("\n{0} -> {1}. Elapsed time: {2} ms", fileName, objectName, sw.ElapsedMilliseconds);
-
+            string objectName = "?";
+            try
+            {
+                objectName = await recognizer.RecognizeObjectAsync(data);
+            }
+            catch
+            {
+                objectName = "error";
             }
 
+            sw.Stop();
+
+            this.text.Text += String.Format("\n{0} -> {1}. Elapsed time: {2} ms", file.Name, objectName, sw.ElapsedMilliseconds);
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                await RecognizeFile(recognizer, file);
+            }
         }
     }
 }

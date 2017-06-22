@@ -116,6 +116,13 @@ ImageRecognizer::ImageRecognizer(String^ modelFile)
 	m_model->CreateNetwork(networkConfiguration);
 }
 
+Windows::Foundation::IAsyncOperation<ImageRecognizer^>^ ImageRecognizer::Create(Platform::String^ modelFile)
+{
+	return concurrency::create_async([=] {
+		return ref new ImageRecognizer(modelFile);
+	});
+}
+
 uint32_t ImageRecognizer::GetRequiredWidth()
 {
 	return feature_image_width;
