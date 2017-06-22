@@ -1,2 +1,0 @@
-MainPackage=D:\g\cntk_eval\ImageRecognition\x64\Release\ImageRecognitionUWP\ImageRecognitionUWP_1.0.0.0_x64.appx
-SymbolPackage=D:\g\cntk_eval\ImageRecognition\AppPackages\ImageRecognitionUWP\ImageRecognitionUWP_1.0.0.0_Test\ImageRecognitionUWP_1.0.0.0_x64.appxsym

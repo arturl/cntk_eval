@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26228.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionConsole", "ImageRecognitionConsole\ImageRecognitionConsole.vcxproj", "{59965F02-CADB-45AF-8B1D-4CECF821F8D4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionUWP", "ImageRecognitionUWP\ImageRecognitionUWP.vcxproj", "{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionCS", "ImageRecognitionCS\ImageRecognitionCS.csproj", "{AE11A2D5-D085-4345-8057-40079BA8DE1B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionLib", "ImageRecognitionLib\ImageRecognitionLib.vcxproj", "{923D5682-07B5-4E00-A462-E91598AC82E3}"
@@ -21,12 +19,6 @@ Global
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Debug|x64.Build.0 = Debug|x64
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Release|x64.ActiveCfg = Release|x64
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Release|x64.Build.0 = Release|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Debug|x64.ActiveCfg = Debug|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Debug|x64.Build.0 = Debug|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Debug|x64.Deploy.0 = Debug|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Release|x64.ActiveCfg = Release|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Release|x64.Build.0 = Release|x64
-		{13445773-BCD3-4DA5-A2D0-30BE46BB50E1}.Release|x64.Deploy.0 = Release|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.ActiveCfg = Debug|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.Build.0 = Debug|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.Deploy.0 = Debug|x64
