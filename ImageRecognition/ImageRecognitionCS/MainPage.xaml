@@ -15,7 +15,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row ="0" x:Name="text" Margin="10" TextWrapping="Wrap" Text="" HorizontalAlignment="Left" FontSize="20" />
-            <Button Grid.Row ="1" x:Name="pickButton" Content="Pick Image" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click"/>
+            <Button Grid.Row ="1" x:Name="cntkPickButton" Content="CNTK: Pick Image" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CNTKButton_Click"/>
+            <Button Grid.Row ="2" x:Name="openCVPickButton" Content="OpenCV: Pick Image" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OpenCVButton_Click" Margin="0,37.333,0,0"/>
         </Grid>
     </Grid>
 </Page>
