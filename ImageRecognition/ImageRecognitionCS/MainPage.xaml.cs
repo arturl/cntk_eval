@@ -30,7 +30,7 @@ namespace ImageRecognitionCS
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        ImageRecognizer recognizer;
+        CNTKImageRecognizer recognizer;
 
         public MainPage()
         {
@@ -44,7 +44,7 @@ namespace ImageRecognitionCS
             var sw = Stopwatch.StartNew();
             this.text.Text = "Loading model... ";
 
-            this.recognizer = await ImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model");
+            this.recognizer = await CNTKImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model", "Assets\\imagenet_comp_graph_label_strings.txt");
 
             sw.Stop();
 
@@ -73,7 +73,7 @@ namespace ImageRecognitionCS
 #endif
         }
 
-        private async Task RecognizeFile(ImageRecognizer recognizer, StorageFile file)
+        private async Task RecognizeFile(CNTKImageRecognizer recognizer, StorageFile file)
         {
             var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
 
