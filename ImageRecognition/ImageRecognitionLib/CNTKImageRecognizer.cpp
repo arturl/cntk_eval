@@ -88,12 +88,8 @@ uint32_t CNTKImageRecognizer::GetRequiredHeight()
 
 CNTKImageRecognizer::CNTKImageRecognizer(String^ modelFile, Platform::String^ classesFile)
 {
-	// ===============
-	// Load CNTK model
-	std::wstring w_str = std::wstring(modelFile->Data());
 	CNTK::DeviceDescriptor device = CNTK::DeviceDescriptor::CPUDevice();
-
-	// Load the model file
+	std::wstring w_str = std::wstring(modelFile->Data());
 	model = CNTK::Function::Load(w_str, device);
 
 	// List out all the outputs and their indexes

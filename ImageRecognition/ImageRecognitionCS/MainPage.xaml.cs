@@ -52,20 +52,33 @@ namespace ImageRecognitionCS
             var sw = Stopwatch.StartNew();
             this.text.Text = "Loading CNTK Model... ";
 
-            this.cntkRecognizer = await CNTKImageRecognizer.Create("Assets\\ResNet50_ImageNet_CNTK.model", "Assets\\imagenet_comp_graph_label_strings.txt");
-
-            sw.Stop();
-            this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
+            try
+            {
+                this.cntkRecognizer = await CNTKImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model", "Assets\\imagenet_comp_graph_label_strings.txt");
+                sw.Stop();
+                this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
+                this.cntkPickButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                this.text.Text += $"error: {ex.Message}";
+                sw.Stop();
+            }
 
             sw = Stopwatch.StartNew();
             this.text.Text += "\nLoading OpenCV Model... ";
-            this.cvRecognizer = await OpenCVImageRecognizer.Create("Assets\\tensorflow_inception_graph.pb", "Assets\\imagenet_comp_graph_label_strings.txt");
-
-            sw.Stop();
-            this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
-
-            this.cntkPickButton.IsEnabled = true;
-            this.openCVPickButton.IsEnabled = true;
+            try
+            {
+                this.cvRecognizer = await OpenCVImageRecognizer.Create("Assets\\tensorflow_inception_graph.pb", "Assets\\imagenet_comp_graph_label_strings.txt");
+                sw.Stop();
+                this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
+                this.openCVPickButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                this.text.Text += $"error: {ex.Message}";
+                sw.Stop();
+            }
 
 #if false // not using image picker
             var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
@@ -145,7 +158,7 @@ namespace ImageRecognitionCS
 
             sw.Stop();
 
-            this.text.Text += String.Format("\n{0} -> {1}. Elapsed time: {2} ms", file.Name, objectName, sw.ElapsedMilliseconds);
+            this.text.Text += String.Format("\n{0} -> {1} with {2}. Elapsed time: {3} ms", file.Name, objectName, framework.ToString(), sw.ElapsedMilliseconds);
         }
 
         private async Task GenericImagePicker(MLFramework framework)
