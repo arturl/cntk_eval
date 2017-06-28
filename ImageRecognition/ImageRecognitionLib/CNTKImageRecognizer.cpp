@@ -5,33 +5,9 @@ using namespace ImageRecognitionLib;
 using namespace Platform;
 using namespace Microsoft::MSR::CNTK;
 
-std::vector<std::string> read_class_names(std::string filename);
-Platform::String^ StringFromCharPtr(const std::string str);
+#include "..\Common\utils.inl"
 
-int64_t find_class(std::vector<float> outputs)
-{
-	return std::distance(outputs.begin(), std::max_element(outputs.begin(), outputs.end()));
-}
-
-std::vector<float> get_features(uint8_t* image_data_array, uint32_t reqWidth, uint32_t reqHeight)
-{
-	uint32_t size = reqWidth * reqHeight * 3;
-
-	// BGR conversion to BBB..GGG..RRR
-	std::vector<float> featuresLocal(size);
-	float *pfeatures = featuresLocal.data();
-
-	for (uint32_t c = 0; c < 3; c++) {
-		for (uint32_t p = c; p < size; p = p + 3)
-		{
-			float v = image_data_array[p];
-			*pfeatures++ = v;
-		}
-	}
-	return featuresLocal;
-}
-
-std::string CNTKImageRecognizer::classifyImage(const uint8_t* image_data, size_t image_data_len)
+std::wstring CNTKImageRecognizer::classifyImage(const uint8_t* image_data, size_t image_data_len)
 {
 	// Prepare the input vector and convert it to the correct color scheme (BBB ... GGG ... RRR)
 	size_t resized_image_data_len = GetRequiredWidth() * GetRequiredHeight() * GetRequiredChannels();
@@ -44,6 +20,7 @@ std::string CNTKImageRecognizer::classifyImage(const uint8_t* image_data, size_t
 	std::unordered_map<CNTK::Variable, CNTK::ValuePtr> inputLayer = {};
 
 	auto features = CNTK::Value::CreateBatch<float>(inputShape, rawFeatures, evalDevice, false);
+	inputVar = model->Arguments()[0];
 	inputLayer.insert({ inputVar, features });
 
 	// Prepare the output layer of the computation graph
@@ -52,7 +29,7 @@ std::string CNTKImageRecognizer::classifyImage(const uint8_t* image_data, size_t
 	std::unordered_map<CNTK::Variable, CNTK::ValuePtr> outputLayer = {};
 	CNTK::Variable outputVar = model->Output();
 	CNTK::NDShape outputShape = outputVar.Shape();
-	int possibleClasses = outputShape.Dimensions()[0];
+	size_t possibleClasses = outputShape.Dimensions()[0];
 
 	std::vector<float> rawOutputs(possibleClasses);
 	auto outputs = CNTK::Value::CreateBatch<float>(outputShape, rawOutputs, evalDevice, false);
@@ -75,17 +52,17 @@ std::string CNTKImageRecognizer::classifyImage(const uint8_t* image_data, size_t
 
 uint32_t CNTKImageRecognizer::GetRequiredWidth()
 {
-	return inputShape[0];
+	return (uint32_t)inputShape[0];
 }
 
 uint32_t CNTKImageRecognizer::GetRequiredHeight()
 {
-	return inputShape[1];
+	return (uint32_t)inputShape[1];
 }
 
 uint32_t CNTKImageRecognizer::GetRequiredChannels()
 {
-	return inputShape[2];
+	return (uint32_t)inputShape[2];
 }
 
 CNTKImageRecognizer::CNTKImageRecognizer(String^ modelFile, Platform::String^ classesFile)
@@ -96,7 +73,7 @@ CNTKImageRecognizer::CNTKImageRecognizer(String^ modelFile, Platform::String^ cl
 	// List out all the outputs and their indexes
 	// The probability output is usually listed as 'z' and is 
 	// usually the last layer
-	int z_index = model->Outputs().size() - 1;
+	size_t z_index = model->Outputs().size() - 1;
 
 	// Modify the in-memory model to use the z layer as the actual output
 	auto z_layer = model->Outputs()[z_index];
@@ -107,11 +84,9 @@ CNTKImageRecognizer::CNTKImageRecognizer(String^ modelFile, Platform::String^ cl
 	// Shape contains image [width, height, depth] respectively
 	inputShape = inputVar.Shape();
 
-
 	// Load the class names
 	w_str = std::wstring(classesFile->Data());
-	std::string s_str = std::string(w_str.begin(), w_str.end());
-	classNames = read_class_names(s_str);
+	classNames = read_class_names(w_str);
 }
 
 Windows::Foundation::IAsyncOperation<CNTKImageRecognizer^>^ CNTKImageRecognizer::Create(Platform::String^ modelFile, Platform::String^ classesFile)
@@ -142,6 +117,6 @@ Windows::Foundation::IAsyncOperation<Platform::String^>^ CNTKImageRecognizer::Re
 		}
 
 		auto image_class = classifyImage(rgb.data(), rgb.size());
-		return StringFromCharPtr(image_class);
+		return ref new Platform::String(image_class.c_str());
 	});
 }

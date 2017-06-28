@@ -8,7 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="CNTKImageRecognizer.cpp" />
     <ClCompile Include="OpenCVImageRecognizer.cpp" />
   </ItemGroup>

@@ -10,9 +10,9 @@ namespace ImageRecognitionLib
 		CNTK::FunctionPtr model;
 		CNTK::Variable inputVar;
 		CNTK::NDShape inputShape;
-		std::vector<std::string> classNames;
+		std::vector<std::wstring> classNames;
 		CNTKImageRecognizer(Platform::String^ modelFile, Platform::String^ classesFile);
-		std::string classifyImage(const uint8_t* image_data, size_t image_data_len);
+		std::wstring classifyImage(const uint8_t* image_data, size_t image_data_len);
 
 	public:
 		static Windows::Foundation::IAsyncOperation<CNTKImageRecognizer^>^ CNTKImageRecognizer::Create(Platform::String^ modelFile, Platform::String^ classesFile);

@@ -96,7 +96,7 @@ namespace ImageRecognitionCS
             foreach (var fileName in files)
             {
                 var file = await folder.GetFileAsync(fileName);
-                await RecognizeFile(recognizer, file);
+                await RecognizeFile(MLFramework.CNTK, file);
             }
 #endif
         }

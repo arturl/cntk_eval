@@ -15,8 +15,7 @@ const int image_channels = 3;
 const int feature_image_width = 224;
 const int feature_image_height = 224;
 
-std::vector<std::string> read_class_names(std::string filename);
-Platform::String^ StringFromCharPtr(const std::string str);
+#include "..\Common\utils.inl"
 
 // From http://docs.opencv.org/trunk/d5/de7/tutorial_dnn_googlenet.html
 void getMaxClass(const cv::Mat &probBlob, int *classId, double *classProb)
@@ -38,7 +37,7 @@ uint32_t OpenCVImageRecognizer::GetRequiredHeight()
 	return feature_image_height;
 }
 
-std::string classify_image(cv::dnn::Net* model, std::vector<std::string>* classNames, uint8_t* image_data, size_t image_data_len)
+std::wstring classify_image(cv::dnn::Net* model, std::vector<std::wstring>* classNames, uint8_t* image_data, size_t image_data_len)
 {
 	// Prepare the input layer of the computation graph
 	cv::Mat img = cv::Mat(feature_image_width, feature_image_height, CV_8UC3, (unsigned*)image_data);
@@ -71,8 +70,7 @@ OpenCVImageRecognizer::OpenCVImageRecognizer(String^ modelFile, Platform::String
 
 	// Load the class names
 	w_str = std::wstring(classesFile->Data());
-	s_str = std::string(w_str.begin(), w_str.end());
-	classNames = read_class_names(s_str);
+	classNames = read_class_names(w_str);
 }
 
 Windows::Foundation::IAsyncOperation<OpenCVImageRecognizer^>^ OpenCVImageRecognizer::Create(Platform::String^ modelFile, Platform::String^ classesFile)
@@ -103,6 +101,6 @@ Windows::Foundation::IAsyncOperation<Platform::String^>^ OpenCVImageRecognizer::
 		}
 
 		auto image_class = classify_image(&model, &classNames, rgb.data(), rgb.size());
-		return StringFromCharPtr(image_class);
+		return ref new Platform::String(image_class.c_str());
 	});
 }

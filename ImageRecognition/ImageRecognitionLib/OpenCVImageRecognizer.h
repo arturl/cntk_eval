@@ -7,7 +7,7 @@ namespace ImageRecognitionLib
 	public ref class OpenCVImageRecognizer sealed
 	{
 		cv::dnn::Net model;
-		std::vector<std::string> classNames;
+		std::vector<std::wstring> classNames;
 		OpenCVImageRecognizer(Platform::String^ modelFile, Platform::String^ classesFile);
 
 	public:
