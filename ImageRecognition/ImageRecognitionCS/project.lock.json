@@ -21984,20 +21984,20 @@
     "UAP,Version=v10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\arturl\\.nuget\\packages\\": {}
+    "C:\\Users\\t-josc\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "D:\\g\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\ImageRecognitionCS.csproj",
+      "projectUniqueName": "C:\\Users\\t-josc\\Desktop\\merger\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\ImageRecognitionCS.csproj",
       "projectName": "ImageRecognitionCS",
-      "projectPath": "D:\\g\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\ImageRecognitionCS.csproj",
-      "projectJsonPath": "D:\\g\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\project.json",
+      "projectPath": "C:\\Users\\t-josc\\Desktop\\merger\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\ImageRecognitionCS.csproj",
+      "projectJsonPath": "C:\\Users\\t-josc\\Desktop\\merger\\cntk_eval\\ImageRecognition\\ImageRecognitionCS\\project.json",
       "projectStyle": "ProjectJson",
       "frameworks": {
         "uap10.0": {
           "projectReferences": {
-            "D:\\g\\cntk_eval\\ImageRecognition\\ImageRecognitionLib\\ImageRecognitionLib.vcxproj": {
-              "projectPath": "D:\\g\\cntk_eval\\ImageRecognition\\ImageRecognitionLib\\ImageRecognitionLib.vcxproj"
+            "C:\\Users\\t-josc\\Desktop\\merger\\cntk_eval\\ImageRecognition\\ImageRecognitionLib\\ImageRecognitionLib.vcxproj": {
+              "projectPath": "C:\\Users\\t-josc\\Desktop\\merger\\cntk_eval\\ImageRecognition\\ImageRecognitionLib\\ImageRecognitionLib.vcxproj"
             }
           }
         }

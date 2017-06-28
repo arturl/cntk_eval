@@ -30,27 +30,55 @@ namespace ImageRecognitionCS
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        ImageRecognizer recognizer;
+        private enum MLFramework
+        {
+            CNTK,
+            OpenCV
+        }
+
+        CNTKImageRecognizer cntkRecognizer;
+        OpenCVImageRecognizer cvRecognizer;
 
         public MainPage()
         {
             this.InitializeComponent();
-            this.pickButton.IsEnabled = false;
+            this.cntkPickButton.IsEnabled = false;
+            this.openCVPickButton.IsEnabled = false;
             var t = Run();
         }
 
         private async Task Run()
         {
             var sw = Stopwatch.StartNew();
-            this.text.Text = "Loading model... ";
+            this.text.Text = "Loading CNTK Model... ";
 
-            this.recognizer = await ImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model");
+            try
+            {
+                this.cntkRecognizer = await CNTKImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model", "Assets\\imagenet1000_clsid.txt");
+                sw.Stop();
+                this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
+                this.cntkPickButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                this.text.Text += $"error: {ex.Message}";
+                sw.Stop();
+            }
 
-            sw.Stop();
-
-            this.text.Text += String.Format("Elapsed time: {0} ms", sw.ElapsedMilliseconds);
-
-            this.pickButton.IsEnabled = true;
+            sw = Stopwatch.StartNew();
+            this.text.Text += "\nLoading OpenCV Model... ";
+            try
+            {
+                this.cvRecognizer = await OpenCVImageRecognizer.Create("Assets\\tensorflow_inception_graph.pb", "Assets\\imagenet_comp_graph_label_strings.txt");
+                sw.Stop();
+                this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
+                this.openCVPickButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                this.text.Text += $"error: {ex.Message}";
+                sw.Stop();
+            }
 
 #if false // not using image picker
             var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
@@ -73,17 +101,32 @@ namespace ImageRecognitionCS
 #endif
         }
 
-        private async Task RecognizeFile(ImageRecognizer recognizer, StorageFile file)
+        private async Task RecognizeFile(MLFramework framework, StorageFile file)
         {
             var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
 
             var decoder = await BitmapDecoder.CreateAsync(fileStream);
 
+            uint sHeight = 0;
+            uint sWidth = 0;
+            switch (framework)
+            {
+                case MLFramework.CNTK:
+                    sHeight = cntkRecognizer.GetRequiredHeight();
+                    sWidth = cntkRecognizer.GetRequiredWidth();
+                    break;
+                case MLFramework.OpenCV:
+                    sHeight = cvRecognizer.GetRequiredHeight();
+                    sWidth = cvRecognizer.GetRequiredWidth();
+                    break;
+            }
+
             BitmapTransform transform = new BitmapTransform()
             {
-                ScaledHeight = recognizer.GetRequiredHeight(),
-                ScaledWidth = recognizer.GetRequiredWidth()
+                ScaledHeight = sHeight,
+                ScaledWidth = sWidth
             };
+
 
             PixelDataProvider pixelData = await decoder.GetPixelDataAsync(
                 BitmapPixelFormat.Rgba8,
@@ -98,7 +141,15 @@ namespace ImageRecognitionCS
             string objectName = "?";
             try
             {
-                objectName = await recognizer.RecognizeObjectAsync(data);
+                switch (framework)
+                {
+                    case MLFramework.CNTK:
+                        objectName = await cntkRecognizer.RecognizeObjectAsync(data);
+                        break;
+                    case MLFramework.OpenCV:
+                        objectName = await cvRecognizer.RecognizeObjectAsync(data);
+                        break;
+                }
             }
             catch
             {
@@ -107,10 +158,10 @@ namespace ImageRecognitionCS
 
             sw.Stop();
 
-            this.text.Text += String.Format("\n{0} -> {1}. Elapsed time: {2} ms", file.Name, objectName, sw.ElapsedMilliseconds);
+            this.text.Text += String.Format("\n{0} -> {1} with {2}. Elapsed time: {3} ms", file.Name, objectName, framework.ToString(), sw.ElapsedMilliseconds);
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async Task GenericImagePicker(MLFramework framework)
         {
             var picker = new FileOpenPicker();
             picker.ViewMode = PickerViewMode.Thumbnail;
@@ -119,8 +170,17 @@ namespace ImageRecognitionCS
             var file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                await RecognizeFile(recognizer, file);
+                await RecognizeFile(framework, file);
             }
+        }
+
+        private async void CNTKButton_Click(object sender, RoutedEventArgs e)
+        {
+            await GenericImagePicker(MLFramework.CNTK);
+        }
+        private async void OpenCVButton_Click(object sender, RoutedEventArgs e)
+        {
+            await GenericImagePicker(MLFramework.OpenCV);
         }
     }
 }

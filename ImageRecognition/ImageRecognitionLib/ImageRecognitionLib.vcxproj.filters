@@ -8,11 +8,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="ImageRecognizer.cpp" />
     <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="CNTKImageRecognizer.cpp" />
+    <ClCompile Include="OpenCVImageRecognizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="ImageRecognizer.h" />
+    <ClInclude Include="CNTKImageRecognizer.h" />
+    <ClInclude Include="OpenCVImageRecognizer.h" />
   </ItemGroup>
 </Project>

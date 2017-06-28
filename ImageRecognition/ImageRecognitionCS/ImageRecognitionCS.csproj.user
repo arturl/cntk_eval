@@ -10,4 +10,8 @@
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
     <DebugEngines>{3B476D35-A401-11D2-AAD4-00C04F990171}</DebugEngines>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <DebugEngines />
+  </PropertyGroup>
 </Project>
