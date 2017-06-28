@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>E:\UWP\CNTK\lib\Release\Cntk.Eval_app-2.0.lib;E:\UWP\CNTK\lib\Release\Cntk.Core_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Cntk.Eval_app-2.0.lib;Cntk.Core_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CNTKRoot)\x64\Debug_UWP\EvalDll;$(CNTKRoot)\x64\Debug_UWP\Math;$(CNTKRoot)\x64\Debug_UWP\Common;$(CNTKRoot)\x64\Debug_UWP\CNTKv2LibraryDll</AdditionalLibraryDirectories>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
@@ -78,12 +78,12 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories);$(CNTKRoot)\Source\Common\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories);$(CNTKRoot)\Source\Common\Include;$(CNTKRoot)\Source\CNTKv2LibraryDll\API</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>E:\UWP\CNTK\lib\Release\Cntk.Eval_app-2.0.lib;E:\UWP\CNTK\lib\Release\Cntk.Core_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Cntk.Eval_app-2.0.lib;Cntk.Core_app-2.0.lib;WindowsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CNTKRoot)\x64\Release_UWP\EvalDll;$(CNTKRoot)\x64\Release_UWP\Math;$(CNTKRoot)\x64\Release_UWP\Common;$(CNTKRoot)\x64\Release_UWP\CNTKv2LibraryDll</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
