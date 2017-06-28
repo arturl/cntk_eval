@@ -26,7 +26,6 @@ std::vector<float> get_features(uint8_t* image_data_array, uint32_t reqWidth, ui
 	std::vector<float> featuresLocal(size);
 	float *pfeatures = featuresLocal.data();
 
-	// convert BGR array to BBB...GGG...RRR array
 	for (uint32_t c = 0; c < 3; c++) {
 		for (uint32_t p = c; p < size; p = p + 3)
 		{
@@ -39,19 +38,26 @@ std::vector<float> get_features(uint8_t* image_data_array, uint32_t reqWidth, ui
 
 std::string classify_image(CNTK::FunctionPtr model, std::vector<std::string>* classNames, const uint8_t* image_data, size_t image_data_len)
 {
+	auto device = CNTK::DeviceDescriptor::UseDefaultDevice();
+
+	// Prepare the input vector and convert it to the correct color scheme (BBB ... GGG ... RRR)
 	size_t resized_image_data_len = feature_image_width * feature_image_height * image_channels;
 	std::vector<uint8_t> image_data_array(resized_image_data_len);
 	memcpy_s(image_data_array.data(), image_data_len, image_data, resized_image_data_len);
 	std::vector<float> rawFeatures = get_features(image_data_array.data(), feature_image_height, feature_image_width);
 
+	// Prepare the input layer of the computation graph
+	// Most of the work is putting rawFeatures into CNTK's data representation format
 	std::unordered_map<CNTK::Variable, CNTK::ValuePtr> inputLayer = {};
 	CNTK::Variable inputVar = model->Arguments()[0];
 	CNTK::NDShape inputShape = inputVar.Shape();
-	auto device = CNTK::DeviceDescriptor::UseDefaultDevice();
 
 	auto features = CNTK::Value::CreateBatch<float>(inputShape, rawFeatures, device, false);
 	inputLayer.insert({ inputVar, features });
 
+	// Prepare the output layer of the computation graph
+	// For this a NULL blob will be placed into the output layer 
+	// so that CNTK can place its own datastructure there
 	std::unordered_map<CNTK::Variable, CNTK::ValuePtr> outputLayer = {};
 	CNTK::Variable outputVar = model->Output();
 	CNTK::NDShape outputShape = outputVar.Shape();
@@ -59,19 +65,19 @@ std::string classify_image(CNTK::FunctionPtr model, std::vector<std::string>* cl
 
 	std::vector<float> rawOutputs(possibleClasses);
 	auto outputs = CNTK::Value::CreateBatch<float>(outputShape, rawOutputs, device, false);
-
 	outputLayer.insert({ outputVar, NULL });
 
+	// Evaluate the image and extract the results (which will be a [ #classes x 1 x 1 ] tensor)
 	model->Evaluate(inputLayer, outputLayer, device);
 
 	CNTK::ValuePtr outputVal = outputLayer[outputVar];
-
 	std::vector<std::vector<float>> resultsWrapper;
 	std::vector<float> results;
 
 	outputVal.get()->CopyVariableValueTo(outputVar, resultsWrapper);
 	results = resultsWrapper[0];
 
+	// Map the results to the string representation of the class
 	int64_t image_class = find_class(results);
 	return classNames->at(image_class);
 }

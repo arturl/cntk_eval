@@ -40,15 +40,18 @@ uint32_t OpenCVImageRecognizer::GetRequiredHeight()
 
 std::string classify_image(cv::dnn::Net* model, std::vector<std::string>* classNames, uint8_t* image_data, size_t image_data_len)
 {
+	// Prepare the input layer of the computation graph
 	cv::Mat img = cv::Mat(feature_image_width, feature_image_height, CV_8UC3, (unsigned*)image_data);
 	cv::dnn::Blob inputBlob = cv::dnn::Blob::fromImages(img);
-
 	model->setBlob(tfInBlobName, inputBlob);
+
+	// Evaluate the image and extract the results
 	model->forward();
 
 	cv::dnn::Blob prob = model->getBlob(tfOutBlobName);
 	cv::Mat& result = prob.matRef();
 
+	// Map the results to the string representation of the class
 	int classId;
 	double classProb;
 	getMaxClass(result, &classId, &classProb);
