@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <CNTKRoot>E:\UWP\CNTK</CNTKRoot>
+    <CNTKRoot>D:\g\CNTK-arturl</CNTKRoot>
     <UseOpenBLAS>true</UseOpenBLAS>
-    <OpenBLASRoot>E:\UWP\OpenBLAS-UWP</OpenBLASRoot>
+    <OpenBLASRoot>D:\g\OpenBLAS-UWP</OpenBLASRoot>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
