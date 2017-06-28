@@ -54,7 +54,7 @@ namespace ImageRecognitionCS
 
             try
             {
-                this.cntkRecognizer = await CNTKImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model", "Assets\\imagenet_comp_graph_label_strings.txt");
+                this.cntkRecognizer = await CNTKImageRecognizer.Create("Assets\\ResNet18_ImageNet_CNTK.model", "Assets\\imagenet1000_clsid.txt");
                 sw.Stop();
                 this.text.Text += $"Elapsed time: {sw.ElapsedMilliseconds} ms";
                 this.cntkPickButton.IsEnabled = true;
