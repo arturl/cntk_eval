@@ -5,9 +5,17 @@ VisualStudioVersion = 15.0.26228.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionConsole", "ImageRecognitionConsole\ImageRecognitionConsole.vcxproj", "{59965F02-CADB-45AF-8B1D-4CECF821F8D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionCS", "ImageRecognitionCS\ImageRecognitionCS.csproj", "{AE11A2D5-D085-4345-8057-40079BA8DE1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionCS.OpenCV", "ImageRecognitionCS.OpenCV\ImageRecognitionCS.OpenCV.csproj", "{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionLib", "ImageRecognitionLib\ImageRecognitionLib.vcxproj", "{923D5682-07B5-4E00-A462-E91598AC82E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionCS.CNTK", "ImageRecognitionCS.CNTK\ImageRecognitionCS.CNTK.csproj", "{AE11A2D5-D085-4345-8057-40079BA8DE1B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionCppLib.OpenCV", "ImageRecognitionCppLib.OpenCV\ImageRecognitionCppLib.OpenCV.vcxproj", "{923D5682-07B5-4E00-A462-E91598AC82E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CNTK", "CNTK", "{39DE686D-A64F-4776-86F9-450CF9DF69F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenCV", "OpenCV", "{3E159D0E-EC43-4ED6-B713-1BCCC1CFC964}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageRecognitionCppLib.CNTK", "ImageRecognitionCppLib.CNTK\ImageRecognitionCppLib.CNTK.vcxproj", "{2C7AF00A-703A-4521-974D-7F4E47F92A03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +27,12 @@ Global
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Debug|x64.Build.0 = Debug|x64
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Release|x64.ActiveCfg = Release|x64
 		{59965F02-CADB-45AF-8B1D-4CECF821F8D4}.Release|x64.Build.0 = Release|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Debug|x64.ActiveCfg = Debug|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Debug|x64.Build.0 = Debug|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Debug|x64.Deploy.0 = Debug|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Release|x64.ActiveCfg = Release|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Release|x64.Build.0 = Release|x64
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1}.Release|x64.Deploy.0 = Release|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.ActiveCfg = Debug|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.Build.0 = Debug|x64
 		{AE11A2D5-D085-4345-8057-40079BA8DE1B}.Debug|x64.Deploy.0 = Debug|x64
@@ -29,8 +43,19 @@ Global
 		{923D5682-07B5-4E00-A462-E91598AC82E3}.Debug|x64.Build.0 = Debug|x64
 		{923D5682-07B5-4E00-A462-E91598AC82E3}.Release|x64.ActiveCfg = Release|x64
 		{923D5682-07B5-4E00-A462-E91598AC82E3}.Release|x64.Build.0 = Release|x64
+		{2C7AF00A-703A-4521-974D-7F4E47F92A03}.Debug|x64.ActiveCfg = Debug|x64
+		{2C7AF00A-703A-4521-974D-7F4E47F92A03}.Debug|x64.Build.0 = Debug|x64
+		{2C7AF00A-703A-4521-974D-7F4E47F92A03}.Release|x64.ActiveCfg = Release|x64
+		{2C7AF00A-703A-4521-974D-7F4E47F92A03}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59965F02-CADB-45AF-8B1D-4CECF821F8D4} = {39DE686D-A64F-4776-86F9-450CF9DF69F3}
+		{90B5E1CB-E1D0-4469-B447-5CB9F74CE7A1} = {3E159D0E-EC43-4ED6-B713-1BCCC1CFC964}
+		{AE11A2D5-D085-4345-8057-40079BA8DE1B} = {39DE686D-A64F-4776-86F9-450CF9DF69F3}
+		{923D5682-07B5-4E00-A462-E91598AC82E3} = {3E159D0E-EC43-4ED6-B713-1BCCC1CFC964}
+		{2C7AF00A-703A-4521-974D-7F4E47F92A03} = {39DE686D-A64F-4776-86F9-450CF9DF69F3}
 	EndGlobalSection
 EndGlobal
